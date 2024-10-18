@@ -1,3 +1,11 @@
+# Copyright (c) 2024.
+# -*-coding:utf-8 -*-
+"""
+@file: 0_fully_local.py
+@author: Jerry(Ruihuang)Yang
+@email: rxy216@case.edu
+@time: 10/18/24 19:36
+"""
 from openai import OpenAI
 
 # Set up OpenAI API key
