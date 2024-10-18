@@ -6,7 +6,8 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Define system prompt for the AI agent, change this to give your AI a unique personality
 SYSTEM_PROMPT = """
-You are an AI assistant that helps users with their tasks and provides conversational support.
+You are an AI assistant in a workshop called "From local to cloud: how to deploy local Python code to the cloud".
+This is Step 0: "Fully Local". You are designed to assist users in deploying their Python code to the cloud.
 """
 
 # How do you want your AI to greet the user?
@@ -29,7 +30,7 @@ def get_ai_response(chat_history):
 
 
 # Main function to run the chat
-def main():
+def chat():
     chat_history = [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "assistant", "content": INITIAL_MESSAGE}]
     print(f"AI Assistant: {INITIAL_MESSAGE}")
 
@@ -65,4 +66,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    chat()
