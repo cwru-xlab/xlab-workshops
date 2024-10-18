@@ -1,23 +1,28 @@
-import openai
+from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
 # Set up OpenAI API key securely
-openai.api_key = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=OPENAI_API_KEY)
 
-# Define system prompt for the AI agent
+# Define system prompt for the AI agent, change this to give your AI a unique personality
 SYSTEM_PROMPT = """
 You are an AI assistant that helps users with their tasks and provides conversational support.
+"""
+
+# How do you want your AI to greet the user?
+INITIAL_MESSAGE = """How can I assist you today?
 """
 
 
 # Function to call OpenAI API and get a response
 def get_ai_response(chat_history):
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",  # You can adjust the model if needed
+        response = client.chat.completions.create(
+            model="gpt-4o",  # You can adjust the model if needed
             messages=chat_history,  # Sending the entire chat history to the API
             stream=True  # Enable streaming of responses
         )
@@ -29,11 +34,16 @@ def get_ai_response(chat_history):
 
 # Main function to run the chat
 def main():
-    chat_history = [{"role": "system", "content": SYSTEM_PROMPT}]
-    print("AI Assistant: How can I assist you today?")
+    chat_history = [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "assistant", "content": INITIAL_MESSAGE}]
+    print(f"AI Assistant: {INITIAL_MESSAGE}")
 
     while True:
         user_input = input("You: ")
+        print()  # For formatting
+
+        if user_input.lower() == "exit":  # enter "exit" to end the chat
+            print("Goodbye!")
+            break
 
         # Append user message to the chat history
         chat_history.append({"role": "user", "content": user_input})
@@ -43,14 +53,15 @@ def main():
 
         if response:
             ai_reply = ""
+            print("AI Assistant: ", end="")
             # Iterate through the streamed response
             for chunk in response:
-                if "choices" in chunk:
-                    choice = chunk["choices"][0]
-                    if "delta" in choice:
-                        delta_content = choice["delta"].get("content", "")
-                        ai_reply += delta_content
-                        print(delta_content, end="", flush=True)
+                response_chunk = chunk.choices[0].delta.content
+                if response_chunk:
+                    ai_reply += response_chunk
+                    print(response_chunk, end="", flush=True)
+            else:
+                print()
 
             # Append AI's response to chat history
             chat_history.append({"role": "assistant", "content": ai_reply})
