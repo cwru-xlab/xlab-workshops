@@ -13,7 +13,7 @@ def simulate_ai_streaming_response(text):
     words = text.split()
     for word in words:
         print(word, end=' ', flush=True)
-        time.sleep(0.15)  # Wait for 0.25 seconds before printing the next word
+        time.sleep(0.15)  # Wait for 0.15 seconds before printing the next word
 
 
 if __name__ == "__main__":
