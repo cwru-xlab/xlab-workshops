@@ -1,5 +1,7 @@
 import React, { Suspense } from "react";
 import type { Metadata, ResolvingMetadata } from "next";
+import { Button, Card, CardBody, CardHeader, Spinner } from "@nextui-org/react";
+import { DarkModeSwitch } from "../components/ThemeSwitcher";
 
 type PageProps = {
   params: Promise<{ target_bot: string }>;
@@ -18,17 +20,25 @@ export async function generateMetadata(
 
 const Page = async ({ params, searchParams }: PageProps) => {
   return (
-    <Suspense>
-      <div className="m-6">
-        <h1>{(await params).target_bot}</h1>
-        <h1>{(await searchParams).thread}</h1>
-        {/* <ChatPage
+    <Suspense fallback={<Spinner />}>
+      <div className="grid items-center justify-items-center min-h-screen p-5 gap-16 sm:p-5 font-[family-name:var(--font-geist-sans)]">
+        <Card className="w-full h-full" shadow="lg">
+          <CardHeader>
+            <Button>Chat with my bot</Button>
+            <DarkModeSwitch />
+          </CardHeader>
+          <CardBody>
+            <h1>{(await params).target_bot}</h1>
+            <h1>{(await searchParams).thread}</h1>
+            {/* <ChatPage
           isOpen={true}
           onClose={closeChatModal}
           status={status}
           agent={agent}
           thread={params.thread}
         ></ChatPage> */}
+          </CardBody>
+        </Card>
       </div>
     </Suspense>
   );
