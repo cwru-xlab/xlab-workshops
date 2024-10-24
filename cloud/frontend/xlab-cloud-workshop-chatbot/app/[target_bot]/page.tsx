@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Button, Card, CardBody, CardHeader, Spinner } from "@nextui-org/react";
 import { DarkModeSwitch } from "../components/ThemeSwitcher";
 
+export const runtime = 'edge';
+
 type PageProps = {
   params: Promise<{ target_bot: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
