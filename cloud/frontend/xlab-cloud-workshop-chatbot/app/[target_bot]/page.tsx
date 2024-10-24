@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import { Button, Card, CardBody, CardHeader, Spinner } from "@nextui-org/react";
 import { DarkModeSwitch } from "../components/ThemeSwitcher";
 
@@ -9,8 +9,7 @@ type PageProps = {
 };
 
 export async function generateMetadata(
-  { params, searchParams }: PageProps,
-  parent: ResolvingMetadata
+  { params }: PageProps,
 ): Promise<Metadata> {
   return {
     title: `Chatting with ${(await params).target_bot}'s bot`,
