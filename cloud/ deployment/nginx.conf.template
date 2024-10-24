@@ -1,0 +1,142 @@
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
+server {
+    listen      80 default_server;
+    listen      [::]:80 default_server;
+
+    server_name "";
+    return      444; #CONNECTION CLOSED WITHOUT RESPONSE
+}
+
+# cloud.xlab-cwru.org
+server {
+    listen 80;
+    listen [::]:80;
+
+    http2 on;
+
+    server_name $DOMAIN1;
+    server_tokens off;
+
+    # Only allow access if the host is correct
+    if ( $host != "$DOMAIN1" ){
+        return 444; #CONNECTION CLOSED WITHOUT RESPONSE
+    }
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+
+    http2 on;
+
+    server_name $DOMAIN1;
+    server_tokens off;
+
+    if ( $host != "$DOMAIN1" ){
+        return 444; #CONNECTION CLOSED WITHOUT RESPONSE
+    }
+
+    client_max_body_size 50m;
+
+    # Generate local certificates to test ssl with:
+    # `openssl req -newkey rsa:4096 -x509 -sha512 -days 365 -nodes -out localhost_bundle.crt -keyout localhost.key -subj "/C=US/ST=Ohio/L=Cleveland /O=AI4EDU/OU=dev/CN=au4edudev/emailAddress=."`
+    # If you are first time local testing, do the following BEFORE running the above command (at the root of the project):
+    # `mkdir -p ssl && cd ssl`
+    ssl_certificate /etc/nginx/ssl/${DOMAIN1}_bundle.crt;
+    ssl_certificate_key /etc/nginx/ssl/${DOMAIN1}.key;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers EECDH+AESGCM:EECDH+AES256:EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+    add_header Strict-Transport-Security "max-age=31536000";
+    error_page 497  https://$host$request_uri;
+    resolver 127.0.0.11 ipv6=off valid=5s;
+
+    location / {
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_redirect off;
+        proxy_buffering off;
+        set $backend "http://$FRONTEND_PROD:3000";
+        proxy_pass $backend;
+    }
+
+}
+
+# cloud-api.xlab-cwru.org
+server {
+    listen 80;
+    listen [::]:80;
+
+    http2 on;
+
+    server_name $DOMAIN2;
+    server_tokens off;
+
+    # Only allow access if the host is correct
+    if ( $host != "$DOMAIN2" ){
+        return 444; #CONNECTION CLOSED WITHOUT RESPONSE
+    }
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+
+    http2 on;
+
+    server_name $DOMAIN2;
+    server_tokens off;
+
+    if ( $host != "$DOMAIN2" ){
+        return 444; #CONNECTION CLOSED WITHOUT RESPONSE
+    }
+
+    client_max_body_size 50m;
+
+    # Generate local certificates to test ssl with:
+    # `openssl req -newkey rsa:4096 -x509 -sha512 -days 365 -nodes -out localhost_bundle.crt -keyout localhost.key -subj "/C=US/ST=Ohio/L=Cleveland /O=AI4EDU/OU=dev/CN=au4edudev/emailAddress=."`
+    # If you are first time local testing, do the following BEFORE running the above command (at the root of the project):
+    # `mkdir -p ssl && cd ssl`
+    ssl_certificate /etc/nginx/ssl/${DOMAIN1}_bundle.crt;
+    ssl_certificate_key /etc/nginx/ssl/${DOMAIN1}.key;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers EECDH+AESGCM:EECDH+AES256:EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+    ssl_prefer_server_ciphers on;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+    add_header Strict-Transport-Security "max-age=31536000";
+    error_page 497  https://$host$request_uri;
+    resolver 127.0.0.11 ipv6=off valid=5s;
+
+    location / {
+        return 404;
+    }
+
+}

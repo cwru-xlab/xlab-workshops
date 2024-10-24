@@ -1,0 +1,32 @@
+# This is the docker-compose file for in cloud development and production
+
+version: "1.0.1"
+services:
+  nginx-server:
+    container_name: nginx-server
+    image: nginx:latest
+    environment:
+      - DOMAIN1=cloud.xlab-cwru.org
+      - DOMAIN2=cloud-api.xlab-cwru.org
+      - FRONTEND_PROD=frontend-server
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./files/nginx_conf/nginx.conf.template:/etc/nginx/templates/nginx.conf.template:ro
+      - ./files/ssl:/etc/nginx/ssl:ro
+    networks:
+      - prodnet
+  frontend-server:
+    container_name: frontend-server
+    image: xlab-ws-chat-front:prod
+    environment:
+      - API_URL=https://cloud-api.xlab-cwru.org
+    networks:
+      - prodnet
+networks:
+  prodnet:
+    driver: bridge
+secrets:
+  xlab-secret:
+    file: edcwsxqaz
