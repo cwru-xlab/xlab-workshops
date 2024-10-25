@@ -10,7 +10,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository_owner }}/xlab-ws-chat-front:prod # change to prod if in production
-  SEC_FILE_NAME: edcwsxqaz
   CONTAINER_NAME: xlab-ws-chat-front-server
 jobs:
   publish:
@@ -45,7 +44,6 @@ jobs:
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && touch ${{ env.SEC_FILE_NAME }} && echo '${{ secrets.PROD_SECRETS }}' | base64 -d > ${{ env.SEC_FILE_NAME }} && exit"
       - name: connect and pull
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin && cd ${{ secrets.WORK_DIR }} && docker stop ${{ env.CONTAINER_NAME }} || true | xargs docker rm || true && docker compose pull ${{ env.CONTAINER_NAME }} && docker compose up -d ${{ env.CONTAINER_NAME }} && exit"
       - name: clean env
