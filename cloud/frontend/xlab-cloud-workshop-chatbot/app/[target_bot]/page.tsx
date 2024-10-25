@@ -22,8 +22,8 @@ const Page = async ({ params }: PageProps) => {
 
   return (
     <Suspense fallback={<Spinner />}>
-      <div className="grid items-center justify-items-center min-h-screen p-1 gap-16 sm:p-1 font-[family-name:var(--font-geist-sans)]">
-        <Card className="w-full h-full" shadow="lg">
+      <div className="grid items-center justify-items-center min-h-screen p-2 gap-16 sm:p-2 font-[family-name:var(--font-geist-sans)]">
+        <Card className="w-full h-full max-h-[98vh] overflow-auto" shadow="sm">
           <CardHeader>
             <div className="flex items-center justify-between">
               <h1 className="text-lg font-bold">

@@ -276,6 +276,7 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
 
             if (done) break;
           }
+          setIsStreaming(false);
         };
 
         processStream();
@@ -289,8 +290,6 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
             isUser: false,
           },
         ]);
-      })
-      .finally(() => {
         setIsStreaming(false);
       });
   };
@@ -343,7 +342,7 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
       <div className="flex flex-col grow px-4 pt-5 pb-2 w-full text-base leading-6 max-md:px-5 max-md:max-w-full h-full">
         <ScrollShadow
           size={20}
-          className="flex flex-col overflow-auto h-full pr-4"
+          className="flex flex-col overflow-y-scroll h-full pr-4"
         >
           {messages.map((message, index) => (
             <Message
