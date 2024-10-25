@@ -19,7 +19,7 @@ export default function Home() {
 
           <div className="flex gap-4 items-center flex-col sm:flex-row">
             <Link href="/rxy216">
-              <Button>Chat with Ruihuang's bot</Button>
+              <Button>Chat with Ruihuang&apos;s bot</Button>
             </Link>
           </div>
         </main>
