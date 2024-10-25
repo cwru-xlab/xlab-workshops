@@ -134,9 +134,26 @@ server {
     add_header Strict-Transport-Security "max-age=31536000";
     error_page 497  https://$host$request_uri;
     resolver 127.0.0.11 ipv6=off valid=5s;
+    
 
     location / {
-        return 404;
+        # Extract the first segment after the root path
+        set $target "";
+        if ($request_uri ~ ^/([^/]+)) {
+            set $target $1;
+        }
+        
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_redirect off;
+        proxy_buffering off;
+
+        # Construct the dynamic backend URL
+        set $backend "http://$target:8000";
+        proxy_pass $backend;
     }
 
 }
