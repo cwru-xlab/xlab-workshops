@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import {
   Card,
   Textarea,
@@ -122,6 +122,7 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
   );
   const [useLocalBackend, setUseLocalBackend] = useState<boolean>(() => {
     // Load initial value from localStorage, default to false if not found
+    if (typeof window === "undefined") return;
     const stored = localStorage.getItem("useLocalBackend");
     return stored ? JSON.parse(stored) : false;
   });
@@ -294,40 +295,42 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
 
   return (
     <Card className="m-1 ml-1" style={{ height: "calc(100% - 1rem)" }}>
-      <div className="flex flex-col items-end fixed top-3 right-3 z-50">
-        <div>
-          <span className="text-md mr-2">
-            Using{" "}
-            {useLocalBackend ? (
-              <span className="font-bold">local</span>
-            ) : (
-              <span className="font-bold">cloud</span>
-            )}{" "}
-            API
-          </span>
-          <Switch
-            isSelected={useLocalBackend}
-            thumbIcon={useLocalBackend ? <Laptop /> : <Cloud />}
-            onValueChange={() => {
-              setUseLocalBackend((prev) => {
-                const newValue = !prev;
-                localStorage.setItem(
-                  "useLocalBackend",
-                  JSON.stringify(newValue)
-                );
-                return newValue;
-              });
-            }}
-            color="default"
-            size="md"
-          />
+      <Suspense fallback={<div>Loading...</div>}>
+        <div className="flex flex-col items-end fixed top-3 right-3 z-50">
+          <div>
+            <span className="text-md mr-2">
+              Using{" "}
+              {useLocalBackend ? (
+                <span className="font-bold">local</span>
+              ) : (
+                <span className="font-bold">cloud</span>
+              )}{" "}
+              API
+            </span>
+            <Switch
+              isSelected={useLocalBackend}
+              thumbIcon={useLocalBackend ? <Laptop /> : <Cloud />}
+              onValueChange={() => {
+                setUseLocalBackend((prev) => {
+                  const newValue = !prev;
+                  localStorage.setItem(
+                    "useLocalBackend",
+                    JSON.stringify(newValue)
+                  );
+                  return newValue;
+                });
+              }}
+              color="default"
+              size="md"
+            />
+          </div>
+          <div>
+            <span className="text-md mr-2 hidden md:block">
+              Current backend API URL: {apiUrl}
+            </span>
+          </div>
         </div>
-        <div>
-          <span className="text-md mr-2 hidden md:block">
-            Current backend API URL: {apiUrl}
-          </span>
-        </div>
-      </div>
+      </Suspense>
       <div className="flex flex-col grow px-4 pt-5 pb-2 w-full text-base leading-6 max-md:px-5 max-md:max-w-full h-full">
         <ScrollShadow
           size={20}
