@@ -12,6 +12,8 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv, dotenv_values
 from sse_starlette.sse import EventSourceResponse
+from fastapi.middleware.cors import CORSMiddleware
+import json
 
 # Load environment variables from .env file
 # try loading from .env file (only when running locally)
@@ -39,42 +41,55 @@ This is Step 2: "Run in Docker". You are designed to assist users in deploying t
 # FastAPI app initialization
 app = FastAPI()
 
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://cloud.xlab-cwru.org"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 # Pydantic model for request body
 class ChatRequest(BaseModel):
     chat_history: list[dict]
 
-# FastAPI endpoint definition
+
 # FastAPI endpoint definition
 @app.post("/chat")
 async def chat(chat_request: ChatRequest):
     # Start with the system prompt
-    chat_history = [{"role": "system", "content": SYSTEM_PROMPT}] + chat_request.chat_history
+    chat_history = [
+        {"role": "system", "content": SYSTEM_PROMPT}
+    ] + chat_request.chat_history
 
-    async def chat_generator():
+    def chat_generator(chat_history):
         try:
             response = client.chat.completions.create(
-                model="gpt-4o",
-                messages=chat_history,
-                stream=True
+                model="gpt-4o", messages=chat_history, stream=True
             )
             ai_reply = ""
             for chunk in response:
                 response_chunk = chunk.choices[0].delta.content
                 if response_chunk:
                     ai_reply += response_chunk
-                    yield {"event": "message", "data": response_chunk}
+                    yield json.dumps({"event": "message", "data": ai_reply})
         except Exception as e:
-            yield {"event": "error", "data": f"Error calling OpenAI API: {str(e)}"}
+            yield json.dumps(
+                {"event": "error", "data": f"Error calling OpenAI API: {str(e)}"}
+            )
 
-    return EventSourceResponse(chat_generator())
-    
+    return EventSourceResponse(chat_generator(chat_history))
+
+
 # a test endpoint
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
+
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run("main:app", reload=True)
-
-
