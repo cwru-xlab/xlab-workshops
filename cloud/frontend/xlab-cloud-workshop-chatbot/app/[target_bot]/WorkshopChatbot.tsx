@@ -120,7 +120,34 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
   const [apiUrl, setApiUrl] = useState<string>(
     `http://localhost:8000/${target_bot}/chat`
   );
-  const [useLocalBackend, setUseLocalBackend] = useState<boolean>(false);
+  const [useLocalBackend, setUseLocalBackend] = useState<boolean>(() => {
+    // Load initial value from localStorage, default to false if not found
+    const stored = localStorage.getItem("useLocalBackend");
+    return stored ? JSON.parse(stored) : false;
+  });
+
+  // Load chat history from localStorage on component mount
+  useEffect(() => {
+    const storedMessages = localStorage.getItem(`chat_history_${target_bot}`);
+    if (storedMessages) {
+      try {
+        const parsedMessages = JSON.parse(storedMessages);
+        setMessages(parsedMessages);
+      } catch (error) {
+        console.error("Error parsing stored messages:", error);
+      }
+    }
+  }, [target_bot]);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    if (messages.length > 0) {
+      localStorage.setItem(
+        `chat_history_${target_bot}`,
+        JSON.stringify(messages)
+      );
+    }
+  }, [messages, target_bot]);
 
   useEffect(() => {
     setApiUrl(
@@ -282,14 +309,23 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
             isSelected={useLocalBackend}
             thumbIcon={useLocalBackend ? <Laptop /> : <Cloud />}
             onValueChange={() => {
-              setUseLocalBackend((prev) => !prev);
+              setUseLocalBackend((prev) => {
+                const newValue = !prev;
+                localStorage.setItem(
+                  "useLocalBackend",
+                  JSON.stringify(newValue)
+                );
+                return newValue;
+              });
             }}
             color="default"
             size="md"
           />
         </div>
         <div>
-          <span className="text-md mr-2 hidden md:block">Current backend API URL: {apiUrl}</span>
+          <span className="text-md mr-2 hidden md:block">
+            Current backend API URL: {apiUrl}
+          </span>
         </div>
       </div>
       <div className="flex flex-col grow px-4 pt-5 pb-2 w-full text-base leading-6 max-md:px-5 max-md:max-w-full h-full">
