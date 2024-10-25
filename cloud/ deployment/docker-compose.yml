@@ -8,7 +8,7 @@ services:
     environment:
       - DOMAIN1=cloud.xlab-cwru.org
       - DOMAIN2=cloud-api.xlab-cwru.org
-      - FRONTEND_PROD=frontend-server
+      - FRONTEND_PROD=xlab-ws-chat-front-server
     ports:
       - 80:80
       - 443:443
