@@ -1,7 +1,14 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import { Card, Textarea, ScrollShadow, Button } from "@nextui-org/react";
+import React, { useState, useEffect, useRef, use } from "react";
+import {
+  Card,
+  Textarea,
+  ScrollShadow,
+  Button,
+  Switch,
+} from "@nextui-org/react";
 import { Bot, User } from "lucide-react";
+import { Cloud, Laptop } from "lucide-react";
 
 interface Message {
   content: string;
@@ -101,11 +108,27 @@ const InputMessage: React.FC<InputMessageProps> = ({
   </div>
 );
 
-const WorkshopChatbot: React.FC = () => {
+interface WorkshopChatbotProps {
+  target_bot: string;
+}
+
+const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
+  const [apiUrl, setApiUrl] = useState<string>(
+    `http://localhost:8000/${target_bot}/chat`
+  );
+  const [useLocalBackend, setUseLocalBackend] = useState<boolean>(false);
+
+  useEffect(() => {
+    setApiUrl(
+      useLocalBackend
+        ? `http://localhost:8000/${target_bot}/chat`
+        : `https://cloud-api.xlab-cwru.org/${target_bot}/chat`
+    );
+  }, [useLocalBackend, target_bot]);
 
   useEffect(() => {
     if (lastMessageRef.current) {
@@ -138,7 +161,7 @@ const WorkshopChatbot: React.FC = () => {
     }));
     chatHistory.push({ role: "user", content: userMessage });
 
-    fetch("http://localhost:8000/chat", {
+    fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -244,6 +267,31 @@ const WorkshopChatbot: React.FC = () => {
 
   return (
     <Card className="m-1 ml-1" style={{ height: "calc(100% - 1rem)" }}>
+      <div className="flex flex-col items-end fixed top-3 right-3 z-50">
+        <div>
+          <span className="text-md mr-2">
+            Using{" "}
+            {useLocalBackend ? (
+              <span className="font-bold">local</span>
+            ) : (
+              <span className="font-bold">cloud</span>
+            )}{" "}
+            API
+          </span>
+          <Switch
+            isSelected={useLocalBackend}
+            thumbIcon={useLocalBackend ? <Laptop /> : <Cloud />}
+            onValueChange={() => {
+              setUseLocalBackend((prev) => !prev);
+            }}
+            color="default"
+            size="md"
+          />
+        </div>
+        <div>
+          <span className="text-md mr-2 hidden md:block">Current backend API URL: {apiUrl}</span>
+        </div>
+      </div>
       <div className="flex flex-col grow px-4 pt-5 pb-2 w-full text-base leading-6 max-md:px-5 max-md:max-w-full h-full">
         <ScrollShadow
           size={20}

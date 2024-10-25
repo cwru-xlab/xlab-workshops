@@ -57,11 +57,11 @@ class ChatRequest(BaseModel):
 
 
 # FastAPI endpoint definition
-@app.post("/chat")
-async def chat(chat_request: ChatRequest):
+@app.post("/{case_id}/chat")
+async def chat(chat_request: ChatRequest, case_id: str):
     # Start with the system prompt
     chat_history = [
-        {"role": "system", "content": SYSTEM_PROMPT}
+        {"role": "system", "content": SYSTEM_PROMPT + f" You are the bot created by Case Western Reserve University. The student who created you has an ID of {case_id}."}
     ] + chat_request.chat_history
 
     def chat_generator(chat_history):

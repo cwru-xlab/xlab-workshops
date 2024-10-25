@@ -18,17 +18,21 @@ export async function generateMetadata({
 }
 
 const Page = async ({ params }: PageProps) => {
+  const { target_bot } = await params;
+
   return (
     <Suspense fallback={<Spinner />}>
       <div className="grid items-center justify-items-center min-h-screen p-1 gap-16 sm:p-1 font-[family-name:var(--font-geist-sans)]">
         <Card className="w-full h-full" shadow="lg">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <h1 className="text-lg font-bold">Chatting with {(await params).target_bot}&apos;s bot</h1>
+              <h1 className="text-lg font-bold">
+                Chatting with {target_bot}&apos;s bot
+              </h1>
             </div>
           </CardHeader>
           <CardBody>
-            <WorkshopChatbot />
+            <WorkshopChatbot target_bot={target_bot} />
           </CardBody>
         </Card>
       </div>
