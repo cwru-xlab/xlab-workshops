@@ -87,9 +87,3 @@ async def chat(chat_request: ChatRequest, case_id: str):
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run("main:app", reload=True)
