@@ -61,7 +61,11 @@ class ChatRequest(BaseModel):
 async def chat(chat_request: ChatRequest, case_id: str):
     # Start with the system prompt
     chat_history = [
-        {"role": "system", "content": SYSTEM_PROMPT + f" You are the bot created by Case Western Reserve University. The student who created you has an ID of {case_id}."}
+        {
+            "role": "system",
+            "content": SYSTEM_PROMPT
+            + f" You are the bot created by Case Western Reserve University. The student who created you has an ID of {case_id}.",
+        }
     ] + chat_request.chat_history
 
     def chat_generator(chat_history):
@@ -84,6 +88,6 @@ async def chat(chat_request: ChatRequest, case_id: str):
 
 
 # a test endpoint
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+@app.get("/{case_id}")
+async def root(case_id: str):
+    return {"message": "Hello World", "case_id": case_id}
