@@ -1,6 +1,6 @@
 # This is the docker-compose file for in cloud development and production
 
-version: "1.0.2"
+version: "1.0.3"
 services:
   nginx-server:
     container_name: nginx-server
@@ -19,7 +19,7 @@ services:
       - prodnet
   xlab-ws-chat-front-server:
     container_name: xlab-ws-chat-front-server
-    image: xlab-ws-chat-front:prod
+    image: ghcr.io/cwru-xlab/xlab-ws-chat-front:prod
     environment:
       - API_URL=https://cloud-api.xlab-cwru.org
     networks:
