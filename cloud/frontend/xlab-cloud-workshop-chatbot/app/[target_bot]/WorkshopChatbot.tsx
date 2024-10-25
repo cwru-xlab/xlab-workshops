@@ -147,6 +147,8 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
         `chat_history_${target_bot}`,
         JSON.stringify(messages)
       );
+    } else {
+      localStorage.removeItem(`chat_history_${target_bot}`);
     }
   }, [messages, target_bot]);
 
@@ -298,6 +300,13 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
       <Suspense fallback={<div>Loading...</div>}>
         <div className="flex flex-col items-end fixed top-3 right-3 z-50">
           <div>
+            <Button
+              className="mr-3 text-md font-bold"
+              size="sm"
+              onClick={() => setMessages([])}
+            >
+              Clear chat
+            </Button>
             <span className="text-md mr-2">
               Using{" "}
               {useLocalBackend ? (
