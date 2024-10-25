@@ -44,21 +44,29 @@ class ChatRequest(BaseModel):
     chat_history: list[dict]
 
 # FastAPI endpoint definition
+# FastAPI endpoint definition
 @app.post("/chat")
 async def chat(chat_request: ChatRequest):
     # Start with the system prompt
     chat_history = [{"role": "system", "content": SYSTEM_PROMPT}] + chat_request.chat_history
 
-    try:
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=chat_history,
-            stream=False
-        )
-        ai_reply = response.choices[0].message['content']
-        return {"reply": ai_reply}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error calling OpenAI API: {str(e)}")
+    async def chat_generator():
+        try:
+            response = client.chat.completions.create(
+                model="gpt-4o",
+                messages=chat_history,
+                stream=True
+            )
+            ai_reply = ""
+            for chunk in response:
+                response_chunk = chunk.choices[0].delta.content
+                if response_chunk:
+                    ai_reply += response_chunk
+                    yield {"event": "message", "data": response_chunk}
+        except Exception as e:
+            yield {"event": "error", "data": f"Error calling OpenAI API: {str(e)}"}
+
+    return EventSourceResponse(chat_generator())
     
 # a test endpoint
 @app.get("/")
