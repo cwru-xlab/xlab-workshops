@@ -160,3 +160,48 @@ docker push ghcr.io/cwru-xlab/xlab-cloud-workshop-api:rxy216
 To verify that the image is published, go to the **Packages** section of your GitHub profile or repository, where the image should be visible under **GitHub Packages**.
 
 Now, your Docker image should be published to GHCR from your terminal!
+
+## Pulling and Running Container from GHCR on Server
+
+After publishing the Docker image to GitHub Container Registry (GHCR), you can pull and run the image directly on your server.
+
+#### Step 1: Pull the Docker Image from GHCR
+
+Use the following command to pull the image from GHCR:
+
+```bash
+docker pull ghcr.io/cwru-xlab/xlab-cloud-workshop-api:<TAG>
+```
+
+- Replace `<TAG>` with the tag used during the image build and push.
+
+**Example:**
+
+```bash
+docker pull ghcr.io/cwru-xlab/xlab-cloud-workshop-api:rxy216
+```
+
+#### Step 2: Run the Docker Container
+
+To run the container on your server, use:
+
+```bash
+docker run -d --name <TAG> --network api_prodnet ghcr.io/cwru-xlab/xlab-cloud-workshop-api:<TAG>
+```
+
+- **`-d`**: Runs the container in detached mode.
+- **`--name <TAG>`**: Sets the name of the container.
+- **`--network api_prodnet`**: Connects the container to the `api_prodnet` network, ensuring it is on the same network as the Nginx reverse proxy.
+
+**Example:**
+
+```bash
+docker run -d --name rxy216 --network api_prodnet ghcr.io/cwru-xlab/xlab-cloud-workshop-api:rxy216
+```
+
+#### Notes
+
+- **Ensure the Docker daemon is running** on the server.
+- **The `api_prodnet` network** is used to enable communication between the container and the Nginx reverse proxy. See [here](https://github.com/cwru-xlab/xlab-workshops/blob/main/cloud/README.md#4-handling-requests-with-a-reverse-proxy) for more about reverse proxy.
+
+Now, you should be able to pull and run your container from GHCR on your server, connecting it to the desired network for seamless integration!
