@@ -120,12 +120,7 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
   const [apiUrl, setApiUrl] = useState<string>(
     `http://localhost:8000/${target_bot}/chat`
   );
-  const [useLocalBackend, setUseLocalBackend] = useState<boolean>(() => {
-    // Load initial value from localStorage, default to false if not found
-    if (typeof window === "undefined") return;
-    const stored = localStorage.getItem("useLocalBackend");
-    return stored ? JSON.parse(stored) : false;
-  });
+  const [useLocalBackend, setUseLocalBackend] = useState<boolean>(true);
 
   // Load chat history from localStorage on component mount
   useEffect(() => {
@@ -156,7 +151,7 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
     setApiUrl(
       useLocalBackend
         ? `http://localhost:8000/${target_bot}/chat`
-        : `https://cloud-api.xlab-cwru.org/${target_bot}/chat`
+        : `Cloud API N/A for this workshop`
     );
   }, [useLocalBackend, target_bot]);
 
