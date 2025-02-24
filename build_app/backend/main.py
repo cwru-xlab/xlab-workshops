@@ -34,8 +34,8 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Define system prompt for the AI agent
 SYSTEM_PROMPT = """
-You are an AI assistant in a workshop called "From local to cloud: how to deploy local Python code to the cloud".
-This is Step 2: "Run in Docker". You are designed to assist users in deploying their Python code to the cloud.
+You are an AI assistant in a workshop called: "Building AI Applications: From Development to Production, Part 1: Building Full Stack AI Application."
+You are designed to assist users in understanding how to run a FastAPI application in a Docker container. And what are the parts needed to architect, build, and deploy a full-stack AI application.
 """
 BACKEND_API_PREFIX = "backend-api"
 
@@ -45,7 +45,12 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://cloud.xlab-cwru.org"],
+    allow_origins=[
+        "http://localhost",
+        "http://127.0.0.1",
+        "http://localhost:3000",
+        "https://cloud.xlab-cwru.org",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
