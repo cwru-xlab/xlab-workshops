@@ -9,6 +9,7 @@ import {
 } from "@nextui-org/react";
 import { Bot, User } from "lucide-react";
 import { Cloud, Laptop } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 interface Message {
   content: string;
@@ -59,7 +60,31 @@ const Message: React.FC<MessageProps> = ({ content, isUser }) => (
           </div>
         )}
       </div>
-      <p className="overflow-x-auto whitespace-pre-wrap">{content}</p>
+      <div className="overflow-x-auto markdown-content">
+        {isUser ? (
+          <p className="whitespace-pre-wrap">{content}</p>
+        ) : (
+          <ReactMarkdown
+            components={{
+              p: ({ children }) => <p className="mb-2">{children}</p>,
+              code: ({ node, children, ...props }) => (
+                <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded my-2 overflow-x-auto">
+                  <code {...props}>{children}</code>
+                </pre>
+              ),
+              ul: ({ children }) => (
+                <ul className="list-disc ml-4 mb-2">{children}</ul>
+              ),
+              ol: ({ children }) => (
+                <ol className="list-decimal ml-4 mb-2">{children}</ol>
+              ),
+              li: ({ children }) => <li className="mb-1">{children}</li>,
+            }}
+          >
+            {content}
+          </ReactMarkdown>
+        )}
+      </div>
     </div>
   </div>
 );
