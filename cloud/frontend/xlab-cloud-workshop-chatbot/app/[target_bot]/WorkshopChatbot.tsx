@@ -67,7 +67,7 @@ const Message: React.FC<MessageProps> = ({ content, isUser }) => (
           <ReactMarkdown
             components={{
               p: ({ children }) => <p className="mb-2">{children}</p>,
-              code: ({ node, children, ...props }) => (
+              code: ({ children, ...props }) => (
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded my-2 overflow-x-auto">
                   <code {...props}>{children}</code>
                 </pre>
