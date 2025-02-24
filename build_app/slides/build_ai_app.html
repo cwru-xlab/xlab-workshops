@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>xLab Workshops - Building AI Applications</title>
+
+    <meta
+      name="description"
+      content="A framework for easily creating beautiful presentations using HTML"
+    />
+    <meta name="author" content="Hakim El Hattab" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="dist/reset.css" />
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="stylesheet" href="dist/theme/black.css" id="theme" />
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+  </head>
+
+  <body>
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h3>Building Full Stack AI Applications</h3>
+          <p>
+            <small>By <a href="mailto:rxy216@case.edu">Ruihuang Yang</a></small>
+          </p>
+          <p>Supported by xLab</p>
+          <p>
+            Learn more at
+            <a href="https://case.edu/weatherhead/xlab/"
+              >https://case.edu/weatherhead/xlab/</a
+            >
+          </p>
+        </section>
+
+        <section>
+          <section
+            data-auto-animate
+            data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)"
+          >
+            <h2>Architecting Full-Stack AI Applications</h2>
+            <p>
+              Understanding the four key pillars of a complete full-stack AI
+              application.
+            </p>
+            <div class="r-hstack justify-center">
+              <div
+                data-id="box1"
+                style="
+                  background: #999;
+                  width: 50px;
+                  height: 50px;
+                  margin: 10px;
+                  border-radius: 5px;
+                "
+              ></div>
+              <div
+                data-id="box2"
+                style="
+                  background: #999;
+                  width: 50px;
+                  height: 50px;
+                  margin: 10px;
+                  border-radius: 5px;
+                "
+              ></div>
+              <div
+                data-id="box3"
+                style="
+                  background: #999;
+                  width: 50px;
+                  height: 50px;
+                  margin: 10px;
+                  border-radius: 5px;
+                "
+              ></div>
+              <div
+                data-id="box4"
+                style="
+                  background: #999;
+                  width: 50px;
+                  height: 50px;
+                  margin: 10px;
+                  border-radius: 5px;
+                "
+              ></div>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section
+            data-auto-animate
+            data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)"
+          >
+            <div class="r-hstack justify-center">
+              <div
+                data-id="box1"
+                data-auto-animate-delay="0"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #aed6f1;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Serve
+              </div>
+              <div
+                data-id="box2"
+                data-auto-animate-delay="0.1"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #a2d9ce;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Compute
+              </div>
+              <div
+                data-id="box3"
+                data-auto-animate-delay="0.2"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #fdebd0;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Storage
+              </div>
+              <div
+                data-id="box4"
+                data-auto-animate-delay="0.2"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #d6dbdf;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Inference
+              </div>
+            </div>
+            <h2 style="margin-top: 20px">Full Stack</h2>
+          </section>
+
+          <section data-auto-animate>
+            <div
+              data-id="box1"
+              data-auto-animate-delay="0"
+              style="
+                border-radius: 10px;
+                color: black;
+                background: #aed6f1;
+                width: 200px;
+                height: 100px;
+                margin: 20px;
+              "
+            >
+              Serve
+            </div>
+            <p>
+              Handles user requests from browsers, mobile devices, and other
+              clients.
+            </p>
+            <ul>
+              <li>Delivers frontend applications (Web/Mobile).</li>
+              <li>Handles DNS/SSL</li>
+              <li>Manages API gateways, load balancers.</li>
+              <li>Implements user authentication and authorization.</li>
+              <li>Routes requests to backend services.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Scaling Serve: Handling High Traffic</h2>
+            <p>
+              How do we ensure fast access and scalability as user traffic
+              grows?
+            </p>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 1: Global CDN</h2>
+            <p>
+              Deliver frontend assets closer to users for faster load times.
+            </p>
+            <ul>
+              <li>Uses edge servers distributed worldwide.</li>
+              <li>Caches static assets (HTML, CSS, JS, images).</li>
+              <li>Reduces latency and bandwidth costs.</li>
+            </ul>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 2: Load Balancing</h2>
+            <p>Distribute traffic efficiently to prevent overload.</p>
+            <ul>
+              <li>
+                <strong>DNS-Level Load Balancing</strong>: Directs users to the
+                nearest server.
+              </li>
+              <li>
+                <strong>Network Gateway Load Balancing</strong>: Routes requests
+                to available backend servers.
+              </li>
+              <li>Ensures high availability and fault tolerance.</li>
+            </ul>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 3: Rate Limiting & Queuing</h2>
+            <p>Prevent system overload by controlling request flow.</p>
+            <ul>
+              <li>
+                <strong>Rate Limiting</strong>: Limits requests per user/IP.
+              </li>
+              <li>
+                <strong>Queue Management</strong>: Holds excess requests in a
+                queue instead of dropping them.
+              </li>
+              <li>Ensures fair access and prevents system crashes.</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section
+            data-auto-animate
+            data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)"
+          >
+            <div class="r-hstack justify-center">
+              <div
+                data-id="box1"
+                data-auto-animate-delay="0"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #aed6f1;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Serve
+              </div>
+              <div
+                data-id="box2"
+                data-auto-animate-delay="0.1"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #a2d9ce;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Compute
+              </div>
+              <div
+                data-id="box3"
+                data-auto-animate-delay="0.2"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #fdebd0;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Storage
+              </div>
+              <div
+                data-id="box4"
+                data-auto-animate-delay="0.2"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #d6dbdf;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Inference
+              </div>
+            </div>
+            <h2 style="margin-top: 20px">Full Stack</h2>
+          </section>
+
+          <section data-auto-animate>
+            <div
+              data-id="box2"
+              data-auto-animate-delay="0"
+              style="
+                border-radius: 10px;
+                color: black;
+                background: #a2d9ce;
+                width: 200px;
+                height: 100px;
+                margin: 20px;
+              "
+            >
+              Compute
+            </div>
+            <p>
+              Processes incoming user requests and executes application logic.
+            </p>
+            <ul>
+              <li>Runs backend services (Python, Java, Node.js).</li>
+              <li>Implements business logic and workflows.</li>
+              <li>Interfaces with databases and AI models.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Scaling Compute: Handling High Traffic</h2>
+            <p>
+              How do we efficiently process user requests as traffic scales?
+            </p>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 1: Vertical Scaling</h2>
+            <p>Upgrade a single server for better performance.</p>
+            <ul>
+              <li>Add more CPU, RAM, and disk resources.</li>
+              <li>Simple to implement but has a hard limit.</li>
+              <li>Costly and leads to a single point of failure.</li>
+            </ul>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 2: Horizontal Scaling</h2>
+            <p>Distribute load across multiple servers.</p>
+            <ul>
+              <li>Use a <strong>load balancer</strong> to spread requests.</li>
+              <li>Can scale dynamically based on demand.</li>
+              <li>Prevents single points of failure.</li>
+            </ul>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 3: Microservices Architecture</h2>
+            <p>Break a monolithic system into independent services.</p>
+            <ul>
+              <li>
+                Each service handles a specific function (Auth, Payments, AI,
+                etc.).
+              </li>
+              <li>
+                Runs independently across
+                <strong>hundreds or thousands of servers</strong>.
+              </li>
+              <li>Services communicate via APIs or message queues or gRPC.</li>
+              <li>
+                Scales different parts of the system based on actual demand.
+              </li>
+            </ul>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 4: Message Queues & Scheduled Tasks</h2>
+            <p>Decouple services and handle peak traffic efficiently.</p>
+            <ul style="font-size: xx-large;">
+              <li>
+                <strong>Message Queues (MQs)</strong> - Systems like
+                <strong>Kafka, RabbitMQ, and AWS SQS</strong> buffer incoming
+                tasks to prevent overload.
+              </li>
+              <li>
+                <strong>Asynchronous Processing</strong> - Tasks are processed
+                when resources are available, improving system responsiveness.
+              </li>
+              <li>
+                <strong>Scheduled Tasks</strong> - Jobs (e.g., data processing,
+                AI batch inference) can run during low-traffic periods to
+                optimize resource usage.
+              </li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section
+            data-auto-animate
+            data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)"
+          >
+            <div class="r-hstack justify-center">
+              <div
+                data-id="box1"
+                data-auto-animate-delay="0"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #aed6f1;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Serve
+              </div>
+              <div
+                data-id="box2"
+                data-auto-animate-delay="0.1"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #a2d9ce;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Compute
+              </div>
+              <div
+                data-id="box3"
+                data-auto-animate-delay="0.2"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #fdebd0;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Storage
+              </div>
+              <div
+                data-id="box4"
+                data-auto-animate-delay="0.2"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #d6dbdf;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Inference
+              </div>
+            </div>
+            <h2 style="margin-top: 20px">Full Stack</h2>
+          </section>
+
+          <section data-auto-animate>
+            <div
+              data-id="box3"
+              data-auto-animate-delay="0"
+              style="
+                border-radius: 10px;
+                color: black;
+                background: #fdebd0;
+                width: 200px;
+                height: 100px;
+                margin: 20px;
+              "
+            >
+              Storage
+            </div>
+            <p>Stores user data in different formats based on requirements.</p>
+            <ul>
+              <li>SQL for structured data (PostgreSQL, MySQL).</li>
+              <li>NoSQL for unstructured data (MongoDB, DynamoDB).</li>
+              <li>Object storage for files (S3, Blob Storage).</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Scaling Storage: Handling High Traffic</h2>
+            <p>How do we optimize storage to support more users efficiently?</p>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 1: In-Memory Caching (Redis, Memcached)</h2>
+            <p>
+              Store frequently accessed data in-memory to reduce database load.
+            </p>
+            <ul>
+              <li>
+                Uses <strong>Redis</strong> or <strong>Memcached</strong> for
+                fast key-value storage.
+              </li>
+              <li>Avoids repeated queries to SQL/NoSQL databases.</li>
+              <li>
+                Great for caching
+                <strong>user sessions, API responses, and query results</strong
+                >.
+              </li>
+            </ul>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 2: Local Disk Caching</h2>
+            <p>Cache files locally before fetching from object storage.</p>
+            <ul>
+              <li>Stores temporary files, images, and video segments.</li>
+              <li>
+                Reduces frequent calls to
+                <strong>slow external storage (S3, Blob Storage)</strong>.
+              </li>
+              <li>
+                Often used in <strong>CDN edge nodes</strong> and backend
+                systems.
+              </li>
+            </ul>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 3: Query Result & Write Caching</h2>
+            <p>Optimize database performance with smart caching.</p>
+            <ul>
+              <li>
+                Use <strong>write-through caching</strong> to keep cache
+                updated.
+              </li>
+              <li>
+                Cache expensive <strong>SQL queries</strong> to avoid redundant
+                computations.
+              </li>
+              <li>Invalidate caches intelligently to keep data fresh.</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section
+            data-auto-animate
+            data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)"
+          >
+            <div class="r-hstack justify-center">
+              <div
+                data-id="box1"
+                data-auto-animate-delay="0"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #aed6f1;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Serve
+              </div>
+              <div
+                data-id="box2"
+                data-auto-animate-delay="0.1"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #a2d9ce;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Compute
+              </div>
+              <div
+                data-id="box3"
+                data-auto-animate-delay="0.2"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #fdebd0;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Storage
+              </div>
+              <div
+                data-id="box4"
+                data-auto-animate-delay="0.2"
+                style="
+                  border-radius: 10px;
+                  color: black;
+                  background: #d6dbdf;
+                  width: 200px;
+                  height: 100px;
+                  margin: 20px;
+                "
+              >
+                Inference
+              </div>
+            </div>
+            <h2 style="margin-top: 20px">Full Stack</h2>
+          </section>
+
+          <section data-auto-animate>
+            <div
+              data-id="box4"
+              data-auto-animate-delay="0"
+              style="
+                border-radius: 10px;
+                color: black;
+                background: #d6dbdf;
+                width: 200px;
+                height: 100px;
+                margin: 20px;
+              "
+            >
+              Inference
+            </div>
+            <p>
+              Runs AI models to provide intelligent features and automation.
+            </p>
+            <ul>
+              <li>Deploys machine learning models.</li>
+              <li>Uses GPU resources for efficient computation.</li>
+              <li>Supports real-time or batch AI inference.</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Scaling Inference: Handling AI Workloads</h2>
+            <p>How do we efficiently scale AI inference as demand increases?</p>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 1: GPU Scaling & Model Optimization</h2>
+            <p>
+              Efficiently run AI models with hardware and software
+              optimizations.
+            </p>
+            <ul>
+              <li>Use <strong>GPUs, TPUs</strong> for parallel processing.</li>
+              <li>
+                Optimize models with
+                <strong>quantization, pruning, and distillation</strong>.
+              </li>
+              <li>
+                Reduce latency with
+                <strong>ONNX, TensorRT, or OpenVINO</strong>.
+              </li>
+            </ul>
+          </section>
+
+          <section data-auto-animate>
+            <h2>Step 2: Distributed Inference & Edge AI</h2>
+            <p>
+              Scale AI workloads across multiple servers or closer to users.
+            </p>
+            <ul>
+              <li>
+                Distribute inference across
+                <strong>multiple nodes</strong> (TensorFlow Serving, Triton
+                Inference Server).
+              </li>
+              <li>
+                Deploy models to <strong>Edge AI devices</strong> for real-time
+                processing.
+              </li>
+              <li>
+                Use <strong>auto-scaling inference APIs</strong> (AWS SageMaker,
+                Vertex AI).
+              </li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section data-auto-animate>
+            <h2 data-id="request-flow">
+              Request Flow in Full-Stack AI Applications
+            </h2>
+            <pre
+              data-id="request-animation"
+            ><code class="hljs plaintext" data-trim>
+			User's Browser / Mobile App / API Client / IoT Device
+			 │
+			 ▼
+			Application Backend
+			  </code></pre>
+          </section>
+
+          <section data-auto-animate>
+            <h2 data-id="request-flow">
+              Request Flow in Full-Stack AI Applications
+            </h2>
+            <pre
+              data-id="request-animation"
+            ><code class="hljs plaintext" data-trim data-line-numbers="|1|4|7|10|13|16|18|20">
+		  User's Browser / Mobile App / API Client / IoT Device
+		   │
+		   ▼
+		  DNS Resolution
+		   │
+		   ▼
+		  Load Balancer
+		   │
+		   ▼
+		  Network Gateway
+		   │
+		   ▼
+		  Authentication Service
+		   │
+		   ▼
+		  Application Backend
+		   │
+		   ├──> Storage (SQL/NoSQL/Object Store)
+		   │
+		   └──> AI Inference (GPU-Accelerated)
+			</code></pre>
+          </section>
+        </section>
+
+        <section style="text-align: left">
+          <h1>THE END</h1>
+        </section>
+      </div>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/search/search.js"></script>
+    <script src="plugin/markdown/markdown.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script>
+      // Also available as an ES module, see:
+      // https://revealjs.com/initialization/
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        center: true,
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [
+          RevealZoom,
+          RevealNotes,
+          RevealSearch,
+          RevealMarkdown,
+          RevealHighlight,
+        ],
+      });
+    </script>
+  </body>
+</html>
