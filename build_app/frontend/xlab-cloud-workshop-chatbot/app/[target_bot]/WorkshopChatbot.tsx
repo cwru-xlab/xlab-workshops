@@ -113,13 +113,12 @@ interface WorkshopChatbotProps {
 }
 
 const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
+  const LOCAL_BACKEND_URL = `http://localhost/backend-api/${target_bot}/chat`;
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
-  const [apiUrl, setApiUrl] = useState<string>(
-    `http://localhost:8000/${target_bot}/chat`
-  );
+  const [apiUrl, setApiUrl] = useState<string>(LOCAL_BACKEND_URL);
   const [useLocalBackend, setUseLocalBackend] = useState<boolean>(true);
 
   // Load chat history from localStorage on component mount
@@ -150,7 +149,7 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
   useEffect(() => {
     setApiUrl(
       useLocalBackend
-        ? `http://localhost:8000/${target_bot}/chat`
+        ? LOCAL_BACKEND_URL
         : `Cloud API N/A for this workshop`
     );
   }, [useLocalBackend, target_bot]);
