@@ -29,7 +29,7 @@ interface InputMessageProps {
 }
 
 interface ChatHistory {
-  role: "user" | "assistant";
+  role: "user" | "assistant" | "system";
   content: string;
 }
 
@@ -148,15 +148,50 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
 
   // Load chat history from localStorage on component mount
   useEffect(() => {
-    const storedMessages = localStorage.getItem(`chat_history_${target_bot}`);
-    if (storedMessages) {
-      try {
-        const parsedMessages = JSON.parse(storedMessages);
-        setMessages(parsedMessages);
-      } catch (error) {
-        console.error("Error parsing stored messages:", error);
+    const loadChatHistory = async () => {
+      // First try localStorage
+      const storedMessages = localStorage.getItem(`chat_history_${target_bot}`);
+      if (storedMessages) {
+        try {
+          const parsedMessages = JSON.parse(storedMessages);
+          setMessages(parsedMessages);
+          return;
+        } catch (error) {
+          console.error("Error parsing stored messages:", error);
+        }
       }
-    }
+
+      // If no localStorage data, try backend
+      try {
+        const response = await fetch(
+          `${apiUrl.replace("/chat", "/chat-history")}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Fetched chat history from backend:", data);
+          if (data.chat_history && Array.isArray(data.chat_history)) {
+            
+            // Convert the backend format to frontend format
+            const convertedMessages = data.chat_history
+              .filter((msg: ChatHistory) => msg.role !== "system")
+              .map((msg: ChatHistory) => ({
+                content: msg.content,
+                isUser: msg.role === "user",
+              }));
+            setMessages(convertedMessages);
+            // Save to localStorage for future use
+            localStorage.setItem(
+              `chat_history_${target_bot}`,
+              JSON.stringify(convertedMessages)
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching chat history from backend:", error);
+      }
+    };
+
+    loadChatHistory();
   }, [target_bot]);
 
   // Save messages to localStorage whenever they change
