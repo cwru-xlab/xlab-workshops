@@ -168,9 +168,7 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
         );
         if (response.ok) {
           const data = await response.json();
-          console.log("Fetched chat history from backend:", data);
           if (data.chat_history && Array.isArray(data.chat_history)) {
-            
             // Convert the backend format to frontend format
             const convertedMessages = data.chat_history
               .filter((msg: ChatHistory) => msg.role !== "system")
