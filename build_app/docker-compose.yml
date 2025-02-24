@@ -1,0 +1,55 @@
+# This is docker-compose for local testing, DO NOT USE IN PRODUCTION
+
+services:
+  xlab-ws-backend-server:
+    image: xlab-ws-backend:local
+    container_name: xlab-ws-backend-server
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    secrets:
+      - xlab-secret
+    networks:
+      - localnet
+    depends_on:
+      - nginx
+  xlab-ws-frontend-server:
+    image: xlab-ws-frontend:local
+    container_name: xlab-ws-frontend-server
+    build:
+      context: ./frontend/xlab-cloud-workshop-chatbot
+      dockerfile: Dockerfile
+    networks:
+      - localnet
+    depends_on:
+      - nginx
+  redis-local-server:
+    image: redis/redis-stack:latest
+    container_name: redis-stack
+    volumes:
+      - rds-data:/data:rw
+    ports:
+      - 8001:8001  # Redis dashboard port, not for redis connection
+    networks:
+      - localnet
+  nginx:
+    image: nginx:latest
+    env_file: ./.env
+    environment:
+      - NGINX_ENTRYPOINT_LOCAL_RESOLVERS=true
+      - DOMAIN=localhost
+      - BACKEND_SERVICE=xlab-ws-backend-server
+      - FRONTEND_SERVICE=xlab-ws-frontend-server
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx_conf/nginx.conf.template:/etc/nginx/templates/nginx.conf.template:ro
+    networks:
+      - localnet
+volumes:
+  rds-data:
+networks:
+  localnet:
+secrets:
+  xlab-secret:
+    file: ./backend/.env
