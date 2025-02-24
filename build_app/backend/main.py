@@ -14,6 +14,7 @@ from dotenv import load_dotenv, dotenv_values
 from sse_starlette.sse import EventSourceResponse
 from fastapi.middleware.cors import CORSMiddleware
 import json
+from redis import Redis
 
 # Load environment variables from .env file
 # try loading from .env file (only when running locally)
@@ -30,7 +31,15 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     raise ValueError("OpenAI API key not found in environment variables.")
 
+# Initialize OpenAI client
 client = OpenAI(api_key=OPENAI_API_KEY)
+
+# Initialize Redis connection
+redis_client = Redis(
+    host="redis-local-server",
+    port=6379,
+    decode_responses=True,
+)
 
 # Define system prompt for the AI agent
 SYSTEM_PROMPT = """
@@ -85,12 +94,34 @@ async def chat(chat_request: ChatRequest, case_id: str):
                 if response_chunk:
                     ai_reply += response_chunk
                     yield json.dumps({"event": "message", "data": ai_reply})
+
+            # After stream completes, store the chat history in Redis
+            if ai_reply:
+                # Add AI's response to chat history
+                chat_history.append({"role": "assistant", "content": ai_reply})
+                # Filter out system prompt and store in Redis
+                filtered_history = [
+                    msg for msg in chat_history if msg["role"] != "system"
+                ]
+                redis_key = f"chat_history:{case_id}"
+                redis_client.set(redis_key, json.dumps(filtered_history))
+
         except Exception as e:
             yield json.dumps(
                 {"event": "error", "data": f"Error calling OpenAI API: {str(e)}"}
             )
 
     return EventSourceResponse(chat_generator(chat_history))
+
+
+@app.get("/{BACKEND_API_PREFIX}/{case_id}/chat-history")
+async def get_chat_history(case_id: str):
+    redis_key = f"chat_history:{case_id}"
+    chat_history = redis_client.get(redis_key)
+    if chat_history:
+        history_data = json.loads(chat_history)
+        return {"chat_history": history_data}
+    return {"chat_history": []}
 
 
 # a test endpoint
