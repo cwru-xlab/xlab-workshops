@@ -2,10 +2,9 @@
 
 services:
   xlab-ws-backend-server:
-    image: xlab-ws-backend:local
     container_name: xlab-ws-backend-server
     build:
-      context: ./backend
+      context: ./backend/
       dockerfile: Dockerfile
     secrets:
       - xlab-secret
@@ -14,10 +13,9 @@ services:
     depends_on:
       - nginx
   xlab-ws-frontend-server:
-    image: xlab-ws-frontend:local
     container_name: xlab-ws-frontend-server
     build:
-      context: ./frontend/xlab-cloud-workshop-chatbot
+      context: ./frontend/xlab-cloud-workshop-chatbot/
       dockerfile: Dockerfile
     networks:
       - localnet
@@ -33,8 +31,10 @@ services:
     networks:
       - localnet
   nginx:
-    image: nginx:latest
-    env_file: ./.env
+    build:
+      context: ./nginx  # Directory containing your Dockerfile
+      dockerfile: Dockerfile  # (Optional) Specify the Dockerfile name
+    container_name: nginx
     environment:
       - NGINX_ENTRYPOINT_LOCAL_RESOLVERS=true
       - DOMAIN=localhost
