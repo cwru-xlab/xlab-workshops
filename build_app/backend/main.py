@@ -37,6 +37,7 @@ SYSTEM_PROMPT = """
 You are an AI assistant in a workshop called "From local to cloud: how to deploy local Python code to the cloud".
 This is Step 2: "Run in Docker". You are designed to assist users in deploying their Python code to the cloud.
 """
+BACKEND_API_PREFIX = "backend-api"
 
 # FastAPI app initialization
 app = FastAPI()
@@ -57,7 +58,7 @@ class ChatRequest(BaseModel):
 
 
 # FastAPI endpoint definition
-@app.post("/{case_id}/chat")
+@app.post("/{BACKEND_API_PREFIX}/{case_id}/chat")
 async def chat(chat_request: ChatRequest, case_id: str):
     # Start with the system prompt
     chat_history = [
@@ -88,6 +89,6 @@ async def chat(chat_request: ChatRequest, case_id: str):
 
 
 # a test endpoint
-@app.get("/{case_id}")
+@app.get("/{BACKEND_API_PREFIX}/{case_id}")
 async def root(case_id: str):
     return {"message": "Hello World", "case_id": case_id}
