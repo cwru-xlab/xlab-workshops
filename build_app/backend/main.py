@@ -16,7 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import json
 from redis import Redis
 
-# Load environment variables from .env file
+# Load environment variables from .env file.
 # try loading from .env file (only when running locally)
 try:
     config = dotenv_values(".env")
