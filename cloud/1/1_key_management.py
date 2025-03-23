@@ -6,6 +6,7 @@
 @email: rxy216@case.edu
 @time: 10/18/24 19:36
 """
+
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
@@ -33,7 +34,7 @@ def get_ai_response(chat_history):
         response = client.chat.completions.create(
             model="gpt-4o",  # You can adjust the model if needed
             messages=chat_history,  # Sending the entire chat history to the API
-            stream=True  # Enable streaming of responses
+            stream=True,  # Enable streaming of responses
         )
         return response
     except Exception as e:
@@ -43,7 +44,10 @@ def get_ai_response(chat_history):
 
 # Main function to run the chat
 def chat():
-    chat_history = [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "assistant", "content": INITIAL_MESSAGE}]
+    chat_history = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "assistant", "content": INITIAL_MESSAGE},
+    ]
     print(f"AI Assistant: {INITIAL_MESSAGE}")
 
     while True:

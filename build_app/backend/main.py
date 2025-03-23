@@ -6,6 +6,7 @@
 @email: rxy216@case.edu
 @time: 10/25/24 19:38
 """
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 from openai import OpenAI

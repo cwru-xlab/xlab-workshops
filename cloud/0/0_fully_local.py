@@ -6,10 +6,13 @@
 @email: rxy216@case.edu
 @time: 10/18/24 19:36
 """
+
 from openai import OpenAI
 
 # Set up OpenAI API key
-OPENAI_API_KEY = "sk-1234567890abcdef1234567890abcdef"  # Replace with your OpenAI API key
+OPENAI_API_KEY = (
+    "sk-1234567890abcdef1234567890abcdef"  # Replace with your OpenAI API key
+)
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Define system prompt for the AI agent, change this to give your AI a unique personality
@@ -29,7 +32,7 @@ def get_ai_response(chat_history):
         response = client.chat.completions.create(
             model="gpt-4o",  # You can adjust the model if needed
             messages=chat_history,  # Sending the entire chat history to the API
-            stream=True  # Enable streaming of responses
+            stream=True,  # Enable streaming of responses
         )
         return response
     except Exception as e:
@@ -39,7 +42,10 @@ def get_ai_response(chat_history):
 
 # Main function to run the chat
 def chat():
-    chat_history = [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "assistant", "content": INITIAL_MESSAGE}]
+    chat_history = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "assistant", "content": INITIAL_MESSAGE},
+    ]
     print(f"AI Assistant: {INITIAL_MESSAGE}")
 
     while True:

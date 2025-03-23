@@ -6,6 +6,7 @@
 @email: rxy216@case.edu
 @time: 10/25/24 19:38
 """
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 from openai import OpenAI
@@ -44,7 +45,11 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://cloud.xlab-cwru.org", "https://cloud.xlab-cwru.com",],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://cloud.xlab-cwru.org",
+        "https://cloud.xlab-cwru.com",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -61,7 +66,11 @@ class ChatRequest(BaseModel):
 async def chat(chat_request: ChatRequest, case_id: str):
     # Start with the system prompt
     chat_history = [
-        {"role": "system", "content": SYSTEM_PROMPT + f" You are the bot created by Case Western Reserve University. The student who created you has an ID of {case_id}."}
+        {
+            "role": "system",
+            "content": SYSTEM_PROMPT
+            + f" You are the bot created by Case Western Reserve University. The student who created you has an ID of {case_id}.",
+        }
     ] + chat_request.chat_history
 
     def chat_generator(chat_history):

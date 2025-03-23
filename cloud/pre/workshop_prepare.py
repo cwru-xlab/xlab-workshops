@@ -6,13 +6,14 @@
 @email: rxy216@case.edu
 @time: 10/18/24 19:56
 """
+
 import time
 
 
 def simulate_ai_streaming_response(text):
     words = text.split()
     for word in words:
-        print(word, end=' ', flush=True)
+        print(word, end=" ", flush=True)
         time.sleep(0.15)  # Wait for 0.15 seconds before printing the next word
 
 
