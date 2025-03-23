@@ -44,7 +44,7 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://cloud.xlab-cwru.org"],
+    allow_origins=["http://localhost:3000", "https://cloud.xlab-cwru.org", "https://cloud.xlab-cwru.com",],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

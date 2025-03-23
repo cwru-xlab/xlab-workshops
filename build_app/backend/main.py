@@ -59,6 +59,7 @@ app.add_middleware(
         "http://127.0.0.1",
         "http://localhost:3000",
         "https://cloud.xlab-cwru.org",
+        "https://cloud.xlab-cwru.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],

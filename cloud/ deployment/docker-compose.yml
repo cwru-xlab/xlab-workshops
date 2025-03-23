@@ -21,7 +21,7 @@ services:
     container_name: xlab-ws-chat-front-server
     image: ghcr.io/cwru-xlab/xlab-ws-chat-front:prod
     environment:
-      - API_URL=https://cloud-api.xlab-cwru.org
+      - API_URL=https://cloud-api.xlab-cwru.com
     networks:
       - prodnet
 networks:

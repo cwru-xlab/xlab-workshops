@@ -181,7 +181,7 @@ const WorkshopChatbot: React.FC<WorkshopChatbotProps> = ({ target_bot }) => {
     setApiUrl(
       useLocalBackend
         ? `http://localhost:8000/${target_bot}/chat`
-        : `https://cloud-api.xlab-cwru.org/${target_bot}/chat`
+        : `https://cloud-api.xlab-cwru.com/${target_bot}/chat`
     );
   }, [useLocalBackend, target_bot]);
 
