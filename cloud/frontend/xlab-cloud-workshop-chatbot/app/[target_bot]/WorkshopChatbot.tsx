@@ -29,7 +29,7 @@ interface InputMessageProps {
 }
 
 interface ChatHistory {
-  role: "user" | "assistant";
+  role: "user" | "assistant" | "system";
   content: string;
 }
 
