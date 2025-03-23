@@ -168,3 +168,4 @@ cython_debug/
 
 .vscode/
 xlab-workshops/
+.ruff_cache/
