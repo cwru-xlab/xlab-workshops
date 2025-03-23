@@ -6,8 +6,8 @@ services:
     container_name: nginx-server
     image: nginx:latest
     environment:
-      - DOMAIN1=cloud.xlab-cwru.org
-      - DOMAIN2=cloud-api.xlab-cwru.org
+      - DOMAIN1=cloud.xlab-cwru.com
+      - DOMAIN2=cloud-api.xlab-cwru.com
       - FRONTEND_PROD=xlab-ws-chat-front-server
     ports:
       - 80:80

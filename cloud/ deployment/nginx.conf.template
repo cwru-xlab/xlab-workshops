@@ -11,7 +11,7 @@ server {
     return      444; #CONNECTION CLOSED WITHOUT RESPONSE
 }
 
-# cloud.xlab-cwru.org
+# cloud.xlab-cwru.com
 server {
     listen 80;
     listen [::]:80;
@@ -80,7 +80,7 @@ server {
 
 }
 
-# cloud-api.xlab-cwru.org
+# cloud-api.xlab-cwru.com
 server {
     listen 80;
     listen [::]:80;
