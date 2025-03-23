@@ -6,6 +6,7 @@
 @email: rxy216@case.edu
 @time: 10/25/24 19:38
 """
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 from openai import OpenAI
@@ -14,6 +15,8 @@ from dotenv import load_dotenv, dotenv_values
 from sse_starlette.sse import EventSourceResponse
 from fastapi.middleware.cors import CORSMiddleware
 import json
+import datetime
+from zoneinfo import ZoneInfo
 
 # Load environment variables from .env file
 # try loading from .env file (only when running locally)
@@ -44,7 +47,11 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://cloud.xlab-cwru.org", "https://cloud.xlab-cwru.com",],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://cloud.xlab-cwru.org",
+        "https://cloud.xlab-cwru.com",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -59,12 +66,18 @@ class ChatRequest(BaseModel):
 # FastAPI endpoint definition
 @app.post("/{case_id}/chat")
 async def chat(chat_request: ChatRequest, case_id: str):
+    # get current date time EST in String format, America/New_York and UTC
+    # get the current date and time in UTC and EST
+    utc_now = datetime.datetime.now(datetime.UTC)
+    est_now = datetime.datetime.now(
+        ZoneInfo("America/New_York")
+    )  # Eastern Time with automatic DST
     # Start with the system prompt
     chat_history = [
         {
             "role": "system",
             "content": SYSTEM_PROMPT
-            + f" You are the bot created by Case Western Reserve University. The student who created you has an ID of {case_id}.",
+            + f" You are the bot created by Case Western Reserve University. The student who created you has an ID of {case_id}. The current date and time is {est_now.strftime('%Y-%m-%d %H:%M:%S')} EST ({utc_now.strftime('%Y-%m-%d %H:%M:%S')} UTC).",
         }
     ] + chat_request.chat_history
 
