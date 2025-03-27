@@ -31,7 +31,10 @@ XLAB_API_KEY = os.getenv("XLAB_API_KEY")
 if not XLAB_API_KEY:
     raise ValueError("xLab API key not found in environment variables.")
 
-client = OpenAI(api_key=XLAB_API_KEY)
+client = OpenAI(
+    base_url="https://xlab-gpu0.weatherhead.case.edu/openai-compatible-api/v1",
+    api_key=XLAB_API_KEY,
+)
 
 # Define system prompt for the AI agent
 SYSTEM_PROMPT = """
