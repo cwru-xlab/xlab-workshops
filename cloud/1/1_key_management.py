@@ -14,8 +14,11 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 # Set up OpenAI API key securely
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=OPENAI_API_KEY)
+XLAB_API_KEY = os.getenv("XLAB_API_KEY")
+client = OpenAI(
+    base_url="https://xlab-gpu0.weatherhead.case.edu/openai-compatible-api/v1",
+    api_key=XLAB_API_KEY,
+)
 
 # Define system prompt for the AI agent, change this to give your AI a unique personality
 SYSTEM_PROMPT = """
@@ -32,7 +35,7 @@ INITIAL_MESSAGE = """How can I assist you today?
 def get_ai_response(chat_history):
     try:
         response = client.chat.completions.create(
-            model="gpt-4o",  # You can adjust the model if needed
+            model="/workspace/models/Llama-3.3-70B-Instruct",  # You can adjust the model if needed
             messages=chat_history,  # Sending the entire chat history to the API
             stream=True,  # Enable streaming of responses
         )

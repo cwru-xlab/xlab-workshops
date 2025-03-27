@@ -27,11 +27,11 @@ load_dotenv(dotenv_path="/run/secrets/xlab-secret")
 load_dotenv()
 
 # Set up OpenAI API key securely
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-if not OPENAI_API_KEY:
-    raise ValueError("OpenAI API key not found in environment variables.")
+XLAB_API_KEY = os.getenv("XLAB_API_KEY")
+if not XLAB_API_KEY:
+    raise ValueError("xLab API key not found in environment variables.")
 
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = OpenAI(api_key=XLAB_API_KEY)
 
 # Define system prompt for the AI agent
 SYSTEM_PROMPT = """
@@ -76,7 +76,9 @@ async def chat(chat_request: ChatRequest, case_id: str):
     def chat_generator(chat_history):
         try:
             response = client.chat.completions.create(
-                model="gpt-4o", messages=chat_history, stream=True
+                model="/workspace/models/Llama-3.3-70B-Instruct",
+                messages=chat_history,
+                stream=True,
             )
             ai_reply = ""
             for chunk in response:

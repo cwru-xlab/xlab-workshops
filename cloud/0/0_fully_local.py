@@ -10,10 +10,13 @@
 from openai import OpenAI
 
 # Set up OpenAI API key
-OPENAI_API_KEY = (
-    "sk-1234567890abcdef1234567890abcdef"  # Replace with your OpenAI API key
+XLAB_API_KEY = (
+    "sk-xlab-1234567890abcdef1234567890abcdef"  # Replace with your xLab API key
 )
-client = OpenAI(api_key=OPENAI_API_KEY)
+client = OpenAI(
+    base_url="https://xlab-gpu0.weatherhead.case.edu/openai-compatible-api/v1",
+    api_key=XLAB_API_KEY,
+)
 
 # Define system prompt for the AI agent, change this to give your AI a unique personality
 SYSTEM_PROMPT = """
@@ -30,13 +33,13 @@ INITIAL_MESSAGE = """How can I assist you today?
 def get_ai_response(chat_history):
     try:
         response = client.chat.completions.create(
-            model="gpt-4o",  # You can adjust the model if needed
+            model="/workspace/models/Llama-3.3-70B-Instruct",  # You can adjust the model if needed
             messages=chat_history,  # Sending the entire chat history to the API
             stream=True,  # Enable streaming of responses
         )
         return response
     except Exception as e:
-        print(f"Error calling OpenAI API: {e}")
+        print(f"Error calling xLab API: {e}")
         return None
 
 

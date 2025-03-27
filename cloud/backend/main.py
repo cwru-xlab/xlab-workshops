@@ -28,13 +28,15 @@ except FileNotFoundError:
 load_dotenv(dotenv_path="/run/secrets/xlab-secret")
 load_dotenv()
 
-# Set up OpenAI API key securely
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-if not OPENAI_API_KEY:
-    raise ValueError("OpenAI API key not found in environment variables.")
+# Set up xLab API key securely
+XLAB_API_KEY = os.getenv("XLAB_API_KEY")
+if not XLAB_API_KEY:
+    raise ValueError("xLab API key not found in environment variables.")
 
-client = OpenAI(api_key=OPENAI_API_KEY)
-
+client = OpenAI(
+    base_url="https://xlab-gpu0.weatherhead.case.edu/openai-compatible-api/v1",
+    api_key=XLAB_API_KEY,
+)
 # Define system prompt for the AI agent
 SYSTEM_PROMPT = """
 You are an AI assistant in a workshop called "From local to cloud: how to deploy local Python code to the cloud".
@@ -84,7 +86,9 @@ async def chat(chat_request: ChatRequest, case_id: str):
     def chat_generator(chat_history):
         try:
             response = client.chat.completions.create(
-                model="gpt-4o", messages=chat_history, stream=True
+                model="/workspace/models/Llama-3.3-70B-Instruct",
+                messages=chat_history,
+                stream=True,
             )
             ai_reply = ""
             for chunk in response:
@@ -94,7 +98,7 @@ async def chat(chat_request: ChatRequest, case_id: str):
                     yield json.dumps({"event": "message", "data": ai_reply})
         except Exception as e:
             yield json.dumps(
-                {"event": "error", "data": f"Error calling OpenAI API: {str(e)}"}
+                {"event": "error", "data": f"Error calling xLab API: {str(e)}"}
             )
 
     return EventSourceResponse(chat_generator(chat_history))
