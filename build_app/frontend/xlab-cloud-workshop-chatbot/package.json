@@ -14,7 +14,7 @@
     "@nextui-org/theme": "^2.2.11",
     "framer-motion": "^11.11.9",
     "lucide-react": "^0.453.0",
-    "next": "^15.2.4",
+    "next": "^15.4.7",
     "next-themes": "^0.3.0",
     "nextui-cli": "^0.3.4",
     "react": "18.3.1",
